@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Place Your Order</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="order-container"></div>
+
+  <script>
+    const container = document.getElementById('order-container');
+    const product = JSON.parse(localStorage.getItem('selectedProduct'));
+
+    if (!product) {
+      container.innerHTML = "<p>No product selected!</p>";
+    } else {
+      container.innerHTML = `
+        <div class="order-card">
+          <h2>Order Details</h2>
+          <img src="${product.image}" alt="${product.name}" width="150">
+          <h3>${product.name}</h3>
+          <p><strong>${product.price}</strong></p>
+          <form id="orderForm">
+            <input type="text" id="customerName" placeholder="Your Name" required><br>
+            <input type="tel" id="phone" placeholder="Phone Number" required><br>
+            <textarea id="address" placeholder="Delivery Address" required></textarea><br>
+            <button type="submit">Confirm Order</button>
+          </form>
+        </div>
+      `;
+
+      const form = document.getElementById('orderForm');
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        const name = document.getElementById('customerName').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+
+        alert(`✅ Order Confirmed!\n\nProduct: ${product.name}\nPrice: ${product.price}\nName: ${name}\nPhone: ${phone}\nAddress: ${address}`);
+        localStorage.removeItem('selectedProduct');
+        window.location.href = "index.html"; // Go back to product page
+      });
+    }
+  </script>
+</body>
+</html>
